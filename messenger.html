@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+      #content {
+        width: 25em;
+        margin: 4em auto;
+      }
+    </style>
+  </head>
+  <body>
+    <script type='text/template' id='bookmarklet-template'>
+      <a href="javascript:(function() {
+        var chatUrl = 'https://www.facebook.com/messages/{username}';
+        if (location.href !== chatUrl) {
+          location.href = chatUrl;
+        }
+
+        var removeById = function(id) {
+          var el = document.getElementById(id);
+          if (el !== null) {
+            el.parentNode.removeChild(el);
+          }
+        };
+
+        removeById('pagelet_bluebar');
+        removeById('pagelet_ego_pane');
+        removeById('pagelet_rhc_footer');
+        removeById('pagelet_dock');
+
+        var removeByClass = function(className) {
+          var els = document.getElementsByClassName(className);
+          var length = els.length;
+          var el;
+
+          for (var i=0; i < length; i++) {
+            el = els[i]; 
+            el.parentNode.removeChild(el);
+          };
+        };
+
+        removeByClass('wmMasterView');
+
+        /* Hide profile photos */
+        var style = document.createElement('style');
+        document.head.appendChild(style);
+        style.sheet.insertRule('._50dv { display: none !important;}', 0);
+      })();">{username}</a>
+    </script>
+
+    <div id='content'>
+      <form>
+        https://www.facebook.com/messages/<input id='username-input' placeholder='username'/>
+      </form>
+
+      <p>
+        Drag this link into your bookmarks bar:
+        <span id='bookmarklet-container'><a href='#'>...</a></span>
+      </p>
+
+      <p>
+        How to use the bookmark:
+        <ol>
+          <li>Click the bookmark to open the full page.</li>
+          <li>Wait until the entire page is loaded.</li>
+          <li>Click the bookmark again.</li>
+          <li>Have fun!</li>
+        </ol>
+      </p>
+    </div>
+
+    <script src='https://code.jquery.com/jquery-2.1.1.min.js'></script>
+
+    <script>
+      $(function() {
+        $('#username-input').focus();
+        $('form').keyup(function() {
+          var bookmarklet = $('#bookmarklet-template')
+            .html()
+            .replace(/{username}/g, $('#username-input').val());
+          console.log(bookmarklet);
+          $('#bookmarklet-container').html(bookmarklet);
+        });
+      });
+    </script>
+
+  </body>
+</html>
