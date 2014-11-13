@@ -57,9 +57,22 @@
           };
         })();
 
+        var toggleStickerSize = (function() {
+          var style = document.createElement('style');
+          document.head.appendChild(style);
+          style.sheet.insertRule('.stickerContainer > div { background-size: 20px 20px !important; height: 20px !important; width: 20px: !important;}', 0);
+          return function() {
+            style.sheet.disabled = !style.sheet.disabled;
+          };
+        })();
+
         document.addEventListener('keyup', function(e) {
           if (e.ctrlKey && e.keyCode == 72) { /* ctrl-h */
             toggleStickerVisibility();
+          }
+
+          if (e.ctrlKey && e.keyCode == 74) { /* ctrl-j */
+            toggleStickerSize();
           }
         });
       })();">{username}</a>
