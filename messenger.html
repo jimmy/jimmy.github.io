@@ -45,6 +45,23 @@
         var style = document.createElement('style');
         document.head.appendChild(style);
         style.sheet.insertRule('._50dv { display: none !important;}', 0);
+
+        
+        var toggleStickerVisibility = (function() {
+          var style = document.createElement('style');
+          document.head.appendChild(style);
+          style.sheet.insertRule('.stickerContainer { display: none !important;}', 0);
+          style.sheet.disabled = true;
+          return function() {
+            style.sheet.disabled = !style.sheet.disabled;
+          };
+        })();
+
+        document.addEventListener('keyup', function(e) {
+          if (e.ctrlKey && e.keyCode == 72) { /* ctrl-h */
+            toggleStickerVisibility();
+          }
+        });
       })();">{username}</a>
     </script>
 
