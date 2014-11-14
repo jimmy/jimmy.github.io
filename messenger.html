@@ -46,7 +46,6 @@
           var style = document.createElement('style');
           document.head.appendChild(style);
           style.sheet.insertRule('.wmMasterView { display: none !important;}', 0);
-          style.sheet.disabled = true;
           return function() {
             style.sheet.disabled = !style.sheet.disabled;
           };
