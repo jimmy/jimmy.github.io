@@ -11,8 +11,8 @@
   <body>
     <script type='text/template' id='bookmarklet-template'>
       <a href="javascript:(function() {
-        var chatUrl = 'https://www.facebook.com/messages/{username}';
-        if (location.href !== chatUrl) {
+        var chatUrl = 'https://www.facebook.com/messages/';
+        if (location.href.indexOf(chatUrl) !== 0) {
           location.href = chatUrl;
         }
 
@@ -39,7 +39,18 @@
           };
         };
 
-        removeByClass('wmMasterView');
+        /*
+          removeByClass('wmMasterView');
+        */
+        var toggleBuddyList = (function() {
+          var style = document.createElement('style');
+          document.head.appendChild(style);
+          style.sheet.insertRule('.wmMasterView { display: none !important;}', 0);
+          style.sheet.disabled = true;
+          return function() {
+            style.sheet.disabled = !style.sheet.disabled;
+          };
+        })();
 
         /* Hide profile photos */
         var style = document.createElement('style');
@@ -68,21 +79,17 @@
 
         document.addEventListener('keyup', function(e) {
           if (e.ctrlKey && e.keyCode == 72) { /* ctrl-h */
-            toggleStickerVisibility();
+            toggleBuddyList();
           }
 
           if (e.ctrlKey && e.keyCode == 74) { /* ctrl-j */
             toggleStickerSize();
           }
         });
-      })();">{username}</a>
+      })();">Messenger</a>
     </script>
 
     <div id='content'>
-      <form>
-        https://www.facebook.com/messages/<input id='username-input' placeholder='username'/>
-      </form>
-
       <p>
         Drag this link into your bookmarks bar:
         <span id='bookmarklet-container'><a href='#'>...</a></span>
@@ -100,7 +107,7 @@
       </ol>
 
       <ul>
-        <li>Ctrl-h to show and hide stickers.</li>
+        <li>Ctrl-h to hide and show buddy list.</li>
         <li>Ctrl-j to grow and shrink the size of stickers.</li>
       </ul>
     </div>
@@ -109,14 +116,10 @@
 
     <script>
       $(function() {
-        $('#username-input').focus();
-        $('form').keyup(function() {
-          var bookmarklet = $('#bookmarklet-template')
-            .html()
-            .replace(/{username}/g, $('#username-input').val());
-          console.log(bookmarklet);
-          $('#bookmarklet-container').html(bookmarklet);
-        });
+        var bookmarklet = $('#bookmarklet-template')
+          .html()
+          .replace(/{username}/g, $('#username-input').val());
+        $('#bookmarklet-container').html(bookmarklet);
       });
     </script>
 
